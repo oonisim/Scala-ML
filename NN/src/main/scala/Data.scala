@@ -10,11 +10,11 @@ object Data {
   val SEPARATOR_CSV = ','
   val SEPARATOR_PATH = '/'
 
-  val INPUT_LAYER_SIZE = 400;   // Input Images of Digits
+  val INPUT_LAYER_SIZE = 400; // Input Images of Digits
   val HIDDEN_LAYER_SIZE = 25;
-  val NUM_LABELS = 10;          // Note that digit "0" is mapped to label 10 due to MATLAB index is from 1.
+  val NUM_LABELS = 10; // Note that digit "0" is mapped to label 10 due to MATLAB index is from 1.
   val OUTPUT_LAYER_SIZE = NUM_LABELS;
-  
+
   /**
    * --------------------------------------------------------------------------------
    *  Get the hand written image data for the training.
@@ -62,7 +62,7 @@ object Data {
       // Hence, transpose it to be a row/array data.
 
       // The original classification data is adjusted for MATLAB where the first index 1.
-    	// Instead of mapping number 0 to index 1, it was mapped to 10.
+      // Instead of mapping number 0 to index 1, it was mapped to 10.
       // Therefore, need to shift left.
       // If the result matrix row 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, it means the match number is 1, NOT 0.
       // If the result matrix row 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, it means the match number is 0, NOT 9.
@@ -108,11 +108,31 @@ object Data {
     val s = for (i <- (0 until rows)) yield Array.fill(cols) { 1 }
     DenseMatrix(s: _*)
   }
-  
-  def randInitializeWeights(inputLayerSize:Int,outputLayerSize:Int):DenseMatrix[Double]={
-		val epsilon_init = 0.12;
-		val W=DenseMatrix.rand(outputLayerSize, 1 + inputLayerSize)
-		W:*2*epsilon_init-epsilon_init
+
+  def randInitializeWeights(inputLayerSize: Int, outputLayerSize: Int): DenseMatrix[Double] = {
+    val epsilon_init = 0.12;
+    val W = DenseMatrix.rand(outputLayerSize, 1 + inputLayerSize)
+    W :* 2 * epsilon_init - epsilon_init
+  }
+
+  def serializeTheta12(theta1: DenseMatrix[Double], theta2: DenseMatrix[Double]): DenseVector[Double] = {
+    DenseVector.vertcat(theta1.toDenseVector, theta2.toDenseVector)
+  }
+  def reshapeTheta12(in: DenseVector[Double]): (DenseMatrix[Double], DenseMatrix[Double]) = {
+    val theta1 = reshape(
+        in(0 until HIDDEN_LAYER_SIZE * (INPUT_LAYER_SIZE + 1)),
+        HIDDEN_LAYER_SIZE,
+        (INPUT_LAYER_SIZE + 1)); // 
+    val theta2 = reshape(
+        in((HIDDEN_LAYER_SIZE * (INPUT_LAYER_SIZE + 1)) until in.length), 
+        OUTPUT_LAYER_SIZE, 
+        (HIDDEN_LAYER_SIZE + 1));
+    (theta1, theta2)
   }
   
+  def reshape(in: DenseVector[Double], rows: Int, cols: Int): DenseMatrix[Double] = {
+    DenseMatrix.tabulate[Double](rows, cols)(
+      (i, j) => in((j * (rows) + i)))
+  }
+
 }

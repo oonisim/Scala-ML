@@ -16,7 +16,7 @@ import breeze.stats._
   //--------------------------------------------------------------------------------
   // Initial cost with the initial theta1,2 and lambda =0.
   //--------------------------------------------------------------------------------  
-  val (cost, (theta1Gradient, theta2Gradient)) = CostFunction.nnCostFunction(
+  val (cost, theta1Gradient, theta2Gradient) = CostFunction.nnCostFunction(
     initialTheta1,
     initialTheta2,
     Data.INPUT_LAYER_SIZE,
@@ -34,7 +34,7 @@ import breeze.stats._
   // Initial cost with the initial theta1,2 and lambda = 1.
   //--------------------------------------------------------------------------------  
 
-  val (cost1, (t1g1, t2g1)) = CostFunction.nnCostFunction(
+  val (cost1, t1g1, t2g1) = CostFunction.nnCostFunction(
     initialTheta1,
     initialTheta2,
     Data.INPUT_LAYER_SIZE,
@@ -51,7 +51,7 @@ import breeze.stats._
   //--------------------------------------------------------------------------------
   // Initial cost with the initial theta1,2 and lambda = 3.
   //--------------------------------------------------------------------------------  
-  val (cost3, (t1g3, t2g3)) = CostFunction.nnCostFunction(
+  val (cost3, t1g3, t2g3) = CostFunction.nnCostFunction(
     initialTheta1,
     initialTheta2,
     Data.INPUT_LAYER_SIZE,

@@ -10,7 +10,7 @@ object CostFunction extends App {
    * Provide a Evaluation/Cost function for Optimizer to search for the optimal input(s).
    * [Return]
    * Function 
-   * (Theta1, Theta2) => (Cost, Gradient/Theta1, Gradient/Theta2)
+   * DenseVector(Theta1 + Theta2) => (Cost, Gradient/Theta1 + Gradient/Theta2)
    * ================================================================================
    */
   def getInstance(
@@ -19,18 +19,21 @@ object CostFunction extends App {
     number_of_labels: Int,
     training_data: DenseMatrix[Double],
     classifications: DenseMatrix[Int],
-    lambda: Double): ((DenseMatrix[Double], DenseMatrix[Double]) => (Double, (DenseMatrix[Double], DenseMatrix[Double]))) = {
+    lambda: Double): (DenseVector[Double]) => (Double, DenseVector[Double]) = {
 
-    def f(theta1: DenseMatrix[Double], theta2: DenseMatrix[Double]): (Double, (DenseMatrix[Double], DenseMatrix[Double])) = {
-      nnCostFunction(
+    def f(theta12: DenseVector[Double]): (Double, DenseVector[Double]) = {
+      val (theta1, theta2) = Data.reshapeTheta12(theta12)
+      val (cost, theta1grad, theta2grad) = nnCostFunction(
         theta1,
         theta2,
         input_layer_size,
         hidden_layer_size,
         number_of_labels,
         training_data,
-        classifications,
+        classifications, 
         lambda)
+      
+      (cost, Data.serializeTheta12(theta1grad, theta2grad))
     }
     f
   }
@@ -53,7 +56,7 @@ object CostFunction extends App {
     number_of_labels: Int,
     training_data: DenseMatrix[Double],
     classifications: DenseMatrix[Int],
-    lambda: Double): (Double, (DenseMatrix[Double], DenseMatrix[Double])) = {
+    lambda: Double): (Double, DenseMatrix[Double], DenseMatrix[Double]) = {
 
     // Number of trainig data
     val m = training_data.rows
@@ -87,7 +90,7 @@ object CostFunction extends App {
     val J = cost(theta1, theta2, input_layer_size, hidden_layer_size, number_of_labels, training_data, classifications, lambda, X, Y, H_OUT, O_OUT)
     val (theta1_gradient, theta2_gradient) = gradient(theta1, theta2, input_layer_size, hidden_layer_size, number_of_labels, training_data, classifications, lambda, X, Y, H_OUT, O_OUT)
 
-    (J, (theta1_gradient, theta2_gradient))
+    (J, theta1_gradient, theta2_gradient)
   }
   
   /**

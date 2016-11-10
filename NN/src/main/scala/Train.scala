@@ -12,7 +12,7 @@ object Train extends App {
   val (trainingData, classifications) = Data.getTrainingData()
   val lambda = 0
 
-  val costFunction = CostFunction.getInstance(
+  val costFunction = CostFunction.getInstance( 
     Data.INPUT_LAYER_SIZE,
     Data.HIDDEN_LAYER_SIZE,
     Data.NUM_LABELS,
@@ -20,18 +20,11 @@ object Train extends App {
     classifications,
     lambda)
 
-  def f(xs: DenseVector[Double]) = sum(xs :^ 2.0)
-  def gradf(xs: DenseVector[Double]) = 2.0 :* xs
-  val xs = DenseVector.ones[Double](3)
-  val optTrait = new DiffFunction[DenseVector[Double]] {
-    def calculate(xs: DenseVector[Double]) = (f(xs), gradf(xs))
-  }
-  val minimum = minimize(optTrait, DenseVector(1.0, 1.0, 1.0))
-  
   val optimizer = Optimizer.getInstance(costFunction)
   println(optimizer.getClass)
   
-  val ini = Vector(initialTheta1, initialTheta2)
-  val min = minimize(optimizer, ini)
-
+  val initial = Data.serializeTheta12(initialTheta1, initialTheta2)
+  val min = minimize(optimizer, initial)
+  val (t1, t2) = Data.reshapeTheta12(min)
+  print(t2)
 }
