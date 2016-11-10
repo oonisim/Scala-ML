@@ -122,12 +122,12 @@ object CostFunction extends App {
     val cost_y1 = -1.0 * sum(Y.map(_.toDouble) :* log(O_OUT), Axis._1) / m.toDouble
     val cost_y0 = -1.0 * sum((one - Y.map(_.toDouble)) :* log(one - O_OUT), Axis._1) / m.toDouble
 
-    println("cost_y1 is %s".format(cost_y1(0 to 9)))
+    //println("cost_y1 is %s".format(cost_y1(0 to 9)))
 
     // Each row of (cost_y1 + cost_y0) is the cost of xi. 
     // Take the sum of all rows for the total cost (xi: i = 1,2,3..)
     val J_OUT = sum(cost_y1 + cost_y0);
-    println("Cost without regularization is %s".format(J_OUT))
+    //println("Cost without regularization is %s".format(J_OUT))
     //------------------------------------------------------------------------
     // Regularize the cost.
     // Note that you should not be regularizing the terms that correspond to the bias. 
@@ -139,7 +139,7 @@ object CostFunction extends App {
     val Theta1_reg = sum(Theta1_square) * lambda / (2 * m)
     val J = J_OUT + (Theta2_reg + Theta1_reg)
 
-    println("The cost is %s".format(J))
+    println("Cost is %s".format(J))
     J
   }
   /**

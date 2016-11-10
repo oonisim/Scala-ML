@@ -30,7 +30,6 @@ object CostFunctionImmutable extends App {
     val X = DenseMatrix.horzcat(
       DenseMatrix.ones[Double](training_data.rows, 1),
       training_data)
-    //println("%d, %d".format(X.rows, X.cols))
 
     //------------------------------------------------------------------------
     // Calculate the logistic value of the hidden layer H / Activation 2 (A2). 
@@ -179,15 +178,9 @@ object CostFunctionImmutable extends App {
     val Theta1_grad = {
       val zero = DenseMatrix.zeros[Double](theta1.rows, theta1.cols)
       def f(i: Int): DenseMatrix[Double] = {
-        //for (i <- (0 until m)) yield {
-        // i is training set index of X (including bias). X(i, :) is 401 data.
-        // xi is the input.
         val xi = X(i, ::).t;
-        // yi is the classification. 
         val yi = Y(i, ::).t.map(_.toDouble);
-        // hi is the i th output of the hidden layer. H(i, :) is 26 data.
         val hi = H_OUT(i, ::).t;
-        // oi is the i th output layer. O(i, :) is 10 data.
         val oi = O_OUT(i, ::).t;
 
         //------------------------------------------------------------------------
@@ -216,13 +209,6 @@ object CostFunctionImmutable extends App {
 
         val alpha = xi.length - 1
         val t1grad = (1 until hi.length).foldLeft(zero)((theta1grad, j) => theta1grad + gf(j, alpha))
-
-        //      for (j <- (1 until hi.length)) {
-        //        for (alpha <- (0 until xi.length)) {
-        //          val grad = xi(alpha) * hf(j) * ef(j)
-        //          Theta1_grad(j - 1, alpha) = Theta1_grad(j - 1, alpha) + grad
-        //        }
-        //      }
         t1grad
       }
       (0 until m).foldLeft(zero)((tg, i) => tg + f(i))
