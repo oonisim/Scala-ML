@@ -7,10 +7,9 @@ import breeze.stats._
 object CostFunction extends App {
   /**
    * ================================================================================
-   * Provide a Evaluation/Cost function for Optimizer to search for the optimal input(s).
+   * Provide a Evaluation/Cost function for Optimizer to search for optimal input(s).
    * [Return]
-   * Function 
-   * DenseVector(Theta1 + Theta2) => (Cost, Gradient/Theta1 + Gradient/Theta2)
+   * Function DenseVector(Theta1 + Theta2) => (Cost, Gradient/Theta1 + Gradient/Theta2)
    * ================================================================================
    */
   def getInstance(
@@ -30,9 +29,9 @@ object CostFunction extends App {
         hidden_layer_size,
         number_of_labels,
         training_data,
-        classifications, 
+        classifications,
         lambda)
-      
+
       (cost, Data.serializeTheta12(theta1grad, theta2grad))
     }
     f
@@ -73,7 +72,7 @@ object CostFunction extends App {
     // Calculate the logistic value of the hidden layer H / Activation 2 (A2). 
     //------------------------------------------------------------------------
     val H_NET = X * theta1.t;
-    val H_SIG = Utility.sigmoid(H_NET); // Activation
+    val H_SIG = sigmoid(H_NET); // Activation
     val H_OUT = DenseMatrix.horzcat(DenseMatrix.ones[Double](H_SIG.rows, 1), H_SIG) // Add bias
 
     //------------------------------------------------------------------------
@@ -92,7 +91,7 @@ object CostFunction extends App {
 
     (J, theta1_gradient, theta2_gradient)
   }
-  
+
   /**
    * ================================================================================
    * Calculate cost for the theta given.

@@ -21,8 +21,11 @@ object Train extends App {
     lambda)
 
   val optimizer = Optimizer.getInstance(costFunction)
-  println(optimizer.getClass)
+  //println(optimizer.getClass)
   
+  //------------------------------------------------------------------------
+  // Find an optimal theta that minimize the cost function.
+  //------------------------------------------------------------------------
   val initial = Data.serializeTheta12(initialTheta1, initialTheta2)
   val min = minimize(optimizer, initial)
   val (t1, t2) = Data.reshapeTheta12(min)

@@ -109,27 +109,41 @@ object Data {
     DenseMatrix(s: _*)
   }
 
+  /**
+   * --------------------------------------------------------------------------------
+   *  Get weight by radom initialization.
+   * --------------------------------------------------------------------------------
+   */
   def randInitializeWeights(inputLayerSize: Int, outputLayerSize: Int): DenseMatrix[Double] = {
     val epsilon_init = 0.12;
     val W = DenseMatrix.rand(outputLayerSize, 1 + inputLayerSize)
     W :* 2 * epsilon_init - epsilon_init
   }
 
+  /**
+   * --------------------------------------------------------------------------------
+   *  Flatten the theta1 and theta2 into a vector.
+   * --------------------------------------------------------------------------------
+   */
   def serializeTheta12(theta1: DenseMatrix[Double], theta2: DenseMatrix[Double]): DenseVector[Double] = {
     DenseVector.vertcat(theta1.toDenseVector, theta2.toDenseVector)
   }
+  /**
+   * --------------------------------------------------------------------------------
+   *  Construct the theta1 and theta2 from a vector.
+   * --------------------------------------------------------------------------------
+   */
   def reshapeTheta12(in: DenseVector[Double]): (DenseMatrix[Double], DenseMatrix[Double]) = {
     val theta1 = reshape(
-        in(0 until HIDDEN_LAYER_SIZE * (INPUT_LAYER_SIZE + 1)),
-        HIDDEN_LAYER_SIZE,
-        (INPUT_LAYER_SIZE + 1)); // 
+      in(0 until HIDDEN_LAYER_SIZE * (INPUT_LAYER_SIZE + 1)),
+      HIDDEN_LAYER_SIZE,
+      (INPUT_LAYER_SIZE + 1)); // 
     val theta2 = reshape(
-        in((HIDDEN_LAYER_SIZE * (INPUT_LAYER_SIZE + 1)) until in.length), 
-        OUTPUT_LAYER_SIZE, 
-        (HIDDEN_LAYER_SIZE + 1));
+      in((HIDDEN_LAYER_SIZE * (INPUT_LAYER_SIZE + 1)) until in.length),
+      OUTPUT_LAYER_SIZE,
+      (HIDDEN_LAYER_SIZE + 1));
     (theta1, theta2)
   }
-  
   def reshape(in: DenseVector[Double], rows: Int, cols: Int): DenseMatrix[Double] = {
     DenseMatrix.tabulate[Double](rows, cols)(
       (i, j) => in((j * (rows) + i)))

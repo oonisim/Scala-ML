@@ -4,11 +4,6 @@ import breeze.stats._
 import breeze.optimize._
 
 object Utility extends {
-  def sigmoid(z: DenseMatrix[Double]): DenseMatrix[Double] = {
-    DenseMatrix.tabulate[Double](z.rows, z.cols)(
-      (r, c) => (1.0 / (1 + scala.math.exp(-1 * z(r, c)))))
-  }
-
   def createBitMatrix(rows: Int, cols: Int, i: Int, j: Int): DenseMatrix[Double] = {
     // Set 1.0 on (row, col) = (i, j) cell.
     val vector = for (r <- (0 until rows)) yield {
