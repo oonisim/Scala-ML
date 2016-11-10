@@ -7,6 +7,37 @@ import breeze.stats._
 object CostFunctionImmutable extends App {
   /**
    * ================================================================================
+   * Provide a Evaluation/Cost function for Optimizer to search for optimal input(s).
+   * [Return]
+   * Function DenseVector(Theta1 + Theta2) => (Cost, Gradient/Theta1 + Gradient/Theta2)
+   * ================================================================================
+   */
+  def getInstance(
+    input_layer_size: Int,
+    hidden_layer_size: Int,
+    number_of_labels: Int,
+    training_data: DenseMatrix[Double],
+    classifications: DenseMatrix[Int],
+    lambda: Double): (DenseVector[Double]) => (Double, DenseVector[Double]) = {
+
+    def f(theta12: DenseVector[Double]): (Double, DenseVector[Double]) = {
+      val (theta1, theta2) = Data.reshapeTheta12(theta12)
+      val (cost, theta1grad, theta2grad) = nnCostFunction(
+        theta1,
+        theta2,
+        input_layer_size,
+        hidden_layer_size,
+        number_of_labels,
+        training_data,
+        classifications,
+        lambda)
+
+      (cost, Data.serializeTheta12(theta1grad, theta2grad))
+    }
+    f
+  }
+  /**
+   * ================================================================================
    * Neural network cost and gradient function
    * [Return]
    * (Cost, Theat1 cost gradient, Theat2 cost gradient)
@@ -52,6 +83,7 @@ object CostFunctionImmutable extends App {
     val J = cost(theta1, theta2, input_layer_size, hidden_layer_size, number_of_labels, training_data, classifications, lambda, X, Y, H_OUT, O_OUT)
     val (theta1_gradient, theta2_gradient) = gradient(theta1, theta2, input_layer_size, hidden_layer_size, number_of_labels, training_data, classifications, lambda, X, Y, H_OUT, O_OUT)
 
+    println("cost is %s".format(J))
     (J, theta1_gradient, theta2_gradient)
   }
   /**
@@ -178,6 +210,7 @@ object CostFunctionImmutable extends App {
     val Theta1_grad = {
       val zero = DenseMatrix.zeros[Double](theta1.rows, theta1.cols)
       def f(i: Int): DenseMatrix[Double] = {
+        println("i is %d".format(i))
         val xi = X(i, ::).t;
         val yi = Y(i, ::).t.map(_.toDouble);
         val hi = H_OUT(i, ::).t;
@@ -211,6 +244,7 @@ object CostFunctionImmutable extends App {
         val t1grad = (1 until hi.length).foldLeft(zero)((theta1grad, j) => theta1grad + gf(j, alpha))
         t1grad
       }
+      println("go through all inputs")
       (0 until m).foldLeft(zero)((tg, i) => tg + f(i))
 
     }

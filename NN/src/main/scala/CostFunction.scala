@@ -111,28 +111,31 @@ object CostFunction extends App {
     H_OUT: DenseMatrix[Double],
     O_OUT: DenseMatrix[Double]): (Double) = {
 
-    //------------------------------------------------------------------------
+    //========================================================================
     // Calculate the cost at output without regularization.
-    //------------------------------------------------------------------------
+    //========================================================================
     val m = training_data.rows
     val one = DenseMatrix.fill(m, number_of_labels)(1.0)
 
+    //------------------------------------------------------------------------    
     // Each row of (Y .* log(O)) is the cost at each output node for input xi. 
     // Take the sum of all columns in a row by sum(v, Axis._1 for the cost of each xi.
+    //------------------------------------------------------------------------    
     val cost_y1 = -1.0 * sum(Y.map(_.toDouble) :* log(O_OUT), Axis._1) / m.toDouble
     val cost_y0 = -1.0 * sum((one - Y.map(_.toDouble)) :* log(one - O_OUT), Axis._1) / m.toDouble
 
-    //println("cost_y1 is %s".format(cost_y1(0 to 9)))
-
+    //------------------------------------------------------------------------
     // Each row of (cost_y1 + cost_y0) is the cost of xi. 
     // Take the sum of all rows for the total cost (xi: i = 1,2,3..)
+    //------------------------------------------------------------------------
     val J_OUT = sum(cost_y1 + cost_y0);
     //println("Cost without regularization is %s".format(J_OUT))
-    //------------------------------------------------------------------------
+
+    //========================================================================
     // Regularize the cost.
     // Note that you should not be regularizing the terms that correspond to the bias. 
     // For the matrices Theta1 and Theta2, this corresponds to the first column.
-    //------------------------------------------------------------------------
+    //========================================================================
     val Theta2_square = theta2(::, 1 to -1) :^ 2.0
     val Theta2_reg = sum(Theta2_square) * lambda / (2 * m)
     val Theta1_square = theta1(::, 1 to -1) :^ 2.0
@@ -190,9 +193,9 @@ object CostFunction extends App {
 
     val m = training_data.rows
 
-    //------------------------------------------------------------------------
+    //========================================================================
     // Calculate the gradients of Theta2
-    //------------------------------------------------------------------------    
+    //========================================================================
     val Theta2_grad = {
       def f(i: Int): DenseMatrix[Double] = {
         val yi = Y(i, ::).t.map(_.toDouble);
@@ -206,28 +209,30 @@ object CostFunction extends App {
       (0 until m).foldLeft(zero)((tg, i) => tg + f(i))
     }
 
-    //------------------------------------------------------------------------
+    //========================================================================
     // Calculate the gradients of Theta1
-    //------------------------------------------------------------------------
+    //========================================================================    
     // Derivative of g(z): g'(z)=g(z)(1-g(z)) where g(z) is sigmoid(H_NET).
     // Theta1_grad = Theta1_grad + bsxfun(xi, delta_theta1));
+    //------------------------------------------------------------------------
     var Theta1_grad = DenseMatrix.zeros[Double](theta1.rows, theta1.cols);
     for (i <- (0 until m)) {
       // i is training set index of X (including bias). X(i, :) is 401 data.
       // xi is the input.
-      val xi = X(i, ::).t;
-      // yi is the classification. 
-      val yi = Y(i, ::).t.map(_.toDouble);
+      // yi is the classification.
       // hi is the i th output of the hidden layer. H(i, :) is 26 data.
+      // oi is the i th output layer. O(i, :) is 10 data.      
+      val xi = X(i, ::).t;
+      val yi = Y(i, ::).t.map(_.toDouble);
       val hi = H_OUT(i, ::).t;
-      // oi is the i th output layer. O(i, :) is 10 data.
       val oi = O_OUT(i, ::).t;
 
       //------------------------------------------------------------------------
       // Iterative version to calculate the gradients of Theta1
       //------------------------------------------------------------------------
       // Input layer index alpha (including bias) for Theat1_grad(j, alpha)
-      // Hidden layer index j (including bias). There is no input into H0, hence there is no theta for H0. Remove H0.
+      // Hidden layer index j (including bias). 
+      // There is no input into H0, hence there is no theta for H0. Remove H0.
       // Output layer index k 
       //------------------------------------------------------------------------
       def hf(j: Int) = {
