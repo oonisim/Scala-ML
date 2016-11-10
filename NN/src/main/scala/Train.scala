@@ -3,6 +3,7 @@ import breeze.stats._
 import breeze.optimize._
 import breeze.numerics._
 import breeze.stats._
+import breeze.optimize.FirstOrderMinimizer.OptParams
 
 object Train extends App {
 
@@ -27,7 +28,9 @@ object Train extends App {
   // Find an optimal theta that minimize the cost function.
   //------------------------------------------------------------------------
   val initial = Data.serializeTheta12(initialTheta1, initialTheta2)
-  val min = minimize(optimizer, initial)
+  val min = minimize(optimizer, initial, new OptParams(maxIterations=100))
+  
   val (t1, t2) = Data.reshapeTheta12(min)
   print(t2)
+  Data.putWeightData(t1, t2)
 }

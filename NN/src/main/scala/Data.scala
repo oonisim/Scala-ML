@@ -149,4 +149,15 @@ object Data {
       (i, j) => in((j * (rows) + i)))
   }
 
+  /**
+   * --------------------------------------------------------------------------------
+   *  Save DenseMarix to CSV
+   * --------------------------------------------------------------------------------
+   */
+   def putWeightData(theta1: DenseMatrix[Double], theta2: DenseMatrix[Double]) = {
+     val theta1FileName = DATA_DIR + SEPARATOR_PATH + "theta1.csv"
+     val theta2FileName = DATA_DIR + SEPARATOR_PATH + "theta2.csv"
+     csvwrite(new File(theta1FileName), theta1)
+     csvwrite(new File(theta2FileName), theta2)
+   }
 }

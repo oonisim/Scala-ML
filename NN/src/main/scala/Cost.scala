@@ -36,7 +36,7 @@ object Cost extends App {
     // Calculate the logistic value of the hidden layer H / Activation 2 (A2). 
     //------------------------------------------------------------------------
     val H_NET = X * theta1.t;
-    val H_SIG = Utility.sigmoid(H_NET); // Activation
+    val H_SIG = sigmoid(H_NET); // Activation
     val H_OUT = DenseMatrix.horzcat(DenseMatrix.ones[Double](H_SIG.rows, 1), H_SIG) // Add bias
 
     //------------------------------------------------------------------------
