@@ -191,6 +191,14 @@ object CostFunction extends App {
     H_OUT: DenseMatrix[Double],
     O_OUT: DenseMatrix[Double]): (DenseMatrix[Double], DenseMatrix[Double]) = {
 
+    //------------------------------------------------------------------------
+    // m: number of tarining data.
+    // xi is the ith training data.
+    // i is training set index of X (including bias). X(i, :) is 401 data.
+    // yi is the classification.
+    // hi is the i th output of the hidden layer. H(i, :) is 26 data.
+    // oi is the i th output layer. O(i, :) is 10 data.      
+    //------------------------------------------------------------------------    
     val m = training_data.rows
 
     //========================================================================
@@ -199,9 +207,7 @@ object CostFunction extends App {
     val Theta2_grad = {
       def f(i: Int): DenseMatrix[Double] = {
         val yi = Y(i, ::).t.map(_.toDouble);
-        // hi is the i th output of the hidden layer. H(i, :) is 26 data.
         val hi = H_OUT(i, ::).t;
-        // oi is the i th output layer. O(i, :) is 10 data.
         val oi = O_OUT(i, ::).t;
         bsxfun(hi, (oi - yi))
       }
@@ -216,6 +222,33 @@ object CostFunction extends App {
     // Theta1_grad = Theta1_grad + bsxfun(xi, delta_theta1));
     //------------------------------------------------------------------------
     var Theta1_grad = DenseMatrix.zeros[Double](theta1.rows, theta1.cols);
+    def t1(i: Int): Unit = {
+      val xi = X(i, ::).t;
+      val yi = Y(i, ::).t.map(_.toDouble);
+      val hi = H_OUT(i, ::).t;
+      val oi = O_OUT(i, ::).t;
+
+      //------------------------------------------------------------------------
+      // Input layer index alpha (including bias) for Theat1_grad(j, alpha)
+      // Hidden layer index j (including bias). 
+      // There is no input into H0, hence there is no theta for H0. Remove H0.
+      // Output layer index k 
+      //------------------------------------------------------------------------
+      def hf(j: Int) = (hi(j) * (1 - hi(j)))
+      def ef(j: Int): Double = {
+        (0 until oi.length) // k
+          .foldLeft(0.0)((e, k) => e + (theta2(k, j) * (oi(k) - yi(k))))
+      }
+      for (j <- (1 until hi.length); alpha <- (0 until xi.length)) {
+        val gradient = xi(alpha) * hf(j) * ef(j)
+        Theta1_grad(j - 1, alpha) = Theta1_grad(j - 1, alpha) + gradient
+      }
+    }
+    (0 until m).foreach(t1(_))
+
+    /* Somehow the above logic gives different cost every run.
+ 		 * Such as for the first cost, 15.153165940478889, 15.270938604704059, 15.121487776591632
+     * The below code generates constatntly the same cost.   
     for (i <- (0 until m)) {
       // i is training set index of X (including bias). X(i, :) is 401 data.
       // xi is the input.
@@ -248,7 +281,8 @@ object CostFunction extends App {
           Theta1_grad(j - 1, alpha) = Theta1_grad(j - 1, alpha) + grad
         }
       }
-    }
+    }  
+    */
 
     // Regularization with the cost function and gradients.
     val Theta2_grad_reg = DenseMatrix.horzcat(DenseMatrix.zeros[Double](theta2.rows, 1), theta2(::, 1 to -1)) * (lambda / m)

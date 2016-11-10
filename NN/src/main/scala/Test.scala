@@ -2,13 +2,9 @@ import breeze.linalg._
 import breeze.stats._
 import breeze.optimize._
 import breeze.numerics._
+import breeze.stats._
 
 object Test extends App {
-import breeze.linalg._
-import breeze.stats._
-import breeze.optimize._
-import breeze.numerics._
-import breeze.stats._
 
   val (initialTheta1, initialTheta2) = Data.getWeightData()
   val (trainingData, classifications) = Data.getTrainingData()

@@ -6,7 +6,7 @@ import breeze.stats._
 import breeze.optimize.FirstOrderMinimizer.OptParams
 
 object Train extends App {
-  val MAX_ITERATIONS = 10
+  val MAX_ITERATIONS = 100
   
   //val (initialTheta1, initialTheta2) = Data.getWeightData()
   val initialTheta1 = Data.randInitializeWeights(Data.INPUT_LAYER_SIZE, Data.HIDDEN_LAYER_SIZE)
