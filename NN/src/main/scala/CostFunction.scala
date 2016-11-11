@@ -259,28 +259,9 @@ object CostFunction extends App {
       val yi = Y(i, ::).t.map(_.toDouble);
       val hi = H_OUT(i, ::).t;
       val oi = O_OUT(i, ::).t;
-
-      //------------------------------------------------------------------------
-      // Iterative version to calculate the gradients of Theta1
-      //------------------------------------------------------------------------
-      // Input layer index alpha (including bias) for Theat1_grad(j, alpha)
-      // Hidden layer index j (including bias). 
-      // There is no input into H0, hence there is no theta for H0. Remove H0.
-      // Output layer index k 
-      //------------------------------------------------------------------------
-      def hf(j: Int) = {
-        (hi(j) * (1 - hi(j)))
-      }
-      def ef(j: Int): Double = {
-        (0 until oi.length) // k
-          .foldLeft(0.0)((e, k) => e + (theta2(k, j) * (oi(k) - yi(k))))
-      }
-      for (j <- (1 until hi.length)) {
-        for (alpha <- (0 until xi.length)) {
-          val grad = xi(alpha) * hf(j) * ef(j)
-          Theta1_grad(j - 1, alpha) = Theta1_grad(j - 1, alpha) + grad
-        }
-      }
+      def hf(j: Int) = (hi(j) * (1 - hi(j)))
+      def ef(j: Int): Double = (0 until oi.length).foldLeft(0.0)((e, k) => e + (theta2(k, j) * (oi(k) - yi(k))))
+      for (j <- (1 until hi.length) ; alpha <- (0 until xi.length)) Theta1_grad(j - 1, alpha) = Theta1_grad(j - 1, alpha) + xi(alpha) * hf(j) * ef(j)
     }  
     */
 
