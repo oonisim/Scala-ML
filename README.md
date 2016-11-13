@@ -16,10 +16,13 @@
 ![Derivative](https://github.com/oonisim/Scala-ML/blob/master/NN/BPGradientCalculation.png)
 
 ### Prediction
-Feed the test data [Z.CSV](https://github.com/oonisim/Scala-ML/blob/master/NN/src/main/resources/Z.csv) of the validation image.
+Feed the test data [Z.CSV](https://github.com/oonisim/Scala-ML/blob/master/NN/src/main/resources/Z.csv) of the validation image. The image is rotated 90 right and flipped holizontal to be MATLAB(?) format.
 
 ![Hand written image](https://raw.githubusercontent.com/oonisim/Scala-ML/master/NN/src/main/resources/9.bmp)
 
+The actual displayed image (20 x 20 grid is added).
+
+![Displayed Image:](https://raw.githubusercontent.com/oonisim/Scala-ML/master/NN/src/main/resources/Z.bmp)
 
 **Result**
 
