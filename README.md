@@ -25,15 +25,17 @@ The actual displayed image (20 x 20 grid is added).
 ![Displayed Image:](https://raw.githubusercontent.com/oonisim/Scala-ML/master/NN/src/main/resources/Z.bmp)
 
 **Result**
+MATLAB indexing starting from 1, NOT 0. Hence the original MATLAB mapping is digit 1 is mapped to index 1, digit 0 is mapped to index 10. Hence in Scala, digit 1 is mapped to index 0, and digit 0 is mapped to index 9.
 
-	6.140126526715231E-5    <----- 1
-	2.853708343792005E-5    <----- 2
-	7.375562958742116E-6
-	7.57989103737568E-4
-	4.098422401371338E-8
-	0.0044276023643641275
-	0.023448224138242442
-	0.0017604837614926371
-	0.8736362528027787      <----- 9 *
-	3.0172795270422606E-4   <----- 0
+	9.985166843331599E-4
+	3.440359959890938E-4
+	0.012995162855350469
+	0.02014989450785369
+	3.306913551558261E-6
+	5.076212747509842E-6
+	0.01631822486361171
+	0.0017057245044301748
+	0.71953085160519        <----- 9
+	8.473379314208845E-7
+
 
