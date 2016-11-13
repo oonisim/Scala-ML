@@ -80,7 +80,7 @@ object CostFunction extends App {
     //------------------------------------------------------------------------
     val O_NET = H_OUT * theta2.t;
     val O_OUT = sigmoid(O_NET);
-
+    
     //------------------------------------------------------------------------
     // Convert y (10, 10, 10 .... 9, 9, 9, ... ,1) into a boolean matrix.
     // if y(i) is 10, then E(i, :) is [1,0,0,0,0,0,0,0,0,0,0].
@@ -229,9 +229,9 @@ object CostFunction extends App {
 
     /* 
      * Somehow the logic gives different cost every run. Why?
- 		 * Such as for the first cost, 15.153165940478889, 15.270938604704059, 15.121487776591632
-		 */
-    var Theta1_grad = DenseMatrix.zeros[Double](theta1.rows, theta1.cols);    
+     * Such as for the first cost, 15.153165940478889, 15.270938604704059, 15.121487776591632
+     */
+    var Theta1_grad = DenseMatrix.zeros[Double](theta1.rows, theta1.cols);
     def t1(i: Int): Unit = {
       val xi = X(i, ::).t;
       val yi = Y(i, ::).t.map(_.toDouble);
@@ -240,7 +240,7 @@ object CostFunction extends App {
 
       def hf(j: Int) = (hi(j) * (1 - hi(j)))
       def ef(j: Int): Double = (0 until oi.length /* k */ ).foldLeft(0.0)(
-          (e, k) => e + (theta2(k, j) * (oi(k) - yi(k))))
+        (e, k) => e + (theta2(k, j) * (oi(k) - yi(k))))
       for (j <- (1 until hi.length); alpha <- (0 until xi.length)) {
         val gradient = xi(alpha) * hf(j) * ef(j)
         Theta1_grad(j - 1, alpha) = Theta1_grad(j - 1, alpha) + gradient

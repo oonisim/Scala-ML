@@ -38,4 +38,5 @@ object Train extends App {
   val (t1, t2) = Data.reshapeTheta12(min)
   print(t2)
   Data.putWeightData(t1, t2)
+ 
 }

@@ -14,11 +14,10 @@ import breeze.stats._
  */
 object Optimizer {
   // Get DiffFunction[f: DenseVector[Double] => (Double, DenseVector[Double]).
+  // Stick to DenseVector[Double] for the cost function input/output for Breeze optimizer.
   def getInstance(cf: (DenseVector[Double]) => (Double, DenseVector[Double])): DiffFunction[DenseVector[Double]] = {
     val df = new DiffFunction[DenseVector[Double]] {
-      def calculate(input: DenseVector[Double]) = {
-        cf(input)
-      }
+      def calculate(input: DenseVector[Double]) = cf(input)
     }
     df
   }

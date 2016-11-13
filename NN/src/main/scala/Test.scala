@@ -3,12 +3,18 @@ import breeze.stats._
 import breeze.optimize._
 import breeze.numerics._
 import breeze.stats._
+import breeze.plot._
 
 object Test extends App {
 
   val (initialTheta1, initialTheta2) = Data.getWeightData()
   val (trainingData, classifications) = Data.getTrainingData()
 
+  //val X = DenseMatrix.tabulate[Double](100, trainingData.cols)((i, j) => trainingData(i, j))
+  val X = trainingData(1000 until 1400, 0 until trainingData.cols)
+  DisplayData(X)
+
+  /*
   //--------------------------------------------------------------------------------
   // Initial cost with the initial theta1,2 and lambda =0.
   //--------------------------------------------------------------------------------  
@@ -60,5 +66,5 @@ object Test extends App {
   println("Cost (lambda 1) is %s (this value should be about 0.576051)\n".format(cost3));
   //  println("Theat2 gradient is \n%s".format(t2g3(0 to 9, 0 to 2)))
   //  println("Theat1 gradient is \n%s".format(t1g3(0 to 24, 0 to 2)))
-
+*/
 }

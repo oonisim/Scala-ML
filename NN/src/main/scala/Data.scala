@@ -50,6 +50,23 @@ object Data {
 
   /**
    * --------------------------------------------------------------------------------
+   *  Get validation data.
+   * --------------------------------------------------------------------------------
+   */
+  val VALIDATION_DATA_Z_FILE = "Z.csv"
+  def getValidationData(): DenseMatrix[Double] = {
+    val Z_FILE = DATA_DIR + SEPARATOR_PATH + VALIDATION_DATA_Z_FILE
+    require(
+      Files.exists(Paths.get(Z_FILE)) && Files.exists(Paths.get(Z_FILE)),
+      "%s does not exist".format(Z_FILE))
+
+    val Z = csvread(new File(Z_FILE), SEPARATOR_CSV)
+    println("Type of data Z is %s, %d x %d".format(Z.getClass, Z.rows, Z.cols))
+
+    Z
+  }
+  /**
+   * --------------------------------------------------------------------------------
    *  Convert classifications Y (10, 10, 10 .... 9, 9, 9, ... ,1) into a boolean matrix.
    *  If Y(i) is 2, then M(i, :) is [0,0,1,0,0,0,0,0,0,0,0].
    * --------------------------------------------------------------------------------
@@ -87,8 +104,10 @@ object Data {
    *  Theta2      10x26              2080  double
    * --------------------------------------------------------------------------------
    */
-  val WEIGHT_DATA_T1_FILE = "T1.csv"
-  val WEIGHT_DATA_T2_FILE = "T2.csv"
+//  val WEIGHT_DATA_T1_FILE = "T1.csv"
+//  val WEIGHT_DATA_T2_FILE = "T2.csv"
+  val WEIGHT_DATA_T1_FILE = "theta1.csv"
+  val WEIGHT_DATA_T2_FILE = "theta2.csv"
   def getWeightData(): (DenseMatrix[Double], DenseMatrix[Double]) = {
     val T1_FILE = DATA_DIR + SEPARATOR_PATH + WEIGHT_DATA_T1_FILE
     val T2_FILE = DATA_DIR + SEPARATOR_PATH + WEIGHT_DATA_T2_FILE
@@ -104,6 +123,18 @@ object Data {
     (T1, T2)
   }
 
+  /**
+   * --------------------------------------------------------------------------------
+   *  Save trained weight data (theta matrices) to CSV
+   * --------------------------------------------------------------------------------
+   */
+   def putWeightData(theta1: DenseMatrix[Double], theta2: DenseMatrix[Double]) = {
+     val theta1FileName = DATA_DIR + SEPARATOR_PATH + "theta1.csv"
+     val theta2FileName = DATA_DIR + SEPARATOR_PATH + "theta2.csv"
+     csvwrite(new File(theta1FileName), theta1)
+     csvwrite(new File(theta2FileName), theta2)
+   }
+  
   def ones(rows: Int, cols: Int): DenseMatrix[Int] = {
     val s = for (i <- (0 until rows)) yield Array.fill(cols) { 1 }
     DenseMatrix(s: _*)
@@ -149,15 +180,4 @@ object Data {
       (i, j) => in((j * (rows) + i)))
   }
 
-  /**
-   * --------------------------------------------------------------------------------
-   *  Save DenseMarix to CSV
-   * --------------------------------------------------------------------------------
-   */
-   def putWeightData(theta1: DenseMatrix[Double], theta2: DenseMatrix[Double]) = {
-     val theta1FileName = DATA_DIR + SEPARATOR_PATH + "theta1.csv"
-     val theta2FileName = DATA_DIR + SEPARATOR_PATH + "theta2.csv"
-     csvwrite(new File(theta1FileName), theta1)
-     csvwrite(new File(theta2FileName), theta2)
-   }
 }
