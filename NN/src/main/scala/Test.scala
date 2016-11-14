@@ -11,7 +11,7 @@ object Test extends App {
   val (trainingData, classifications) = Data.getTrainingData()
 
   //val X = DenseMatrix.tabulate[Double](100, trainingData.cols)((i, j) => trainingData(i, j))
-  val X = trainingData(1000 until 1400, 0 until trainingData.cols)
+  val X = trainingData(0 until 4900, 0 until trainingData.cols)
   DisplayData(X)
 
   /*

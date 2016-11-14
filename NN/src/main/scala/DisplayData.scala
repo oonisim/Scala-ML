@@ -44,6 +44,8 @@ object DisplayData extends App {
     }
     val f = Figure()
     f.subplot(0) += image(display)
+    f.width_=(300)
+    f.height_=(200)
     f.refresh()
     f.saveas("image.png")
     csvwrite(new File("image.csv"), display)

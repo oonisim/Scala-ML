@@ -4,10 +4,15 @@ import breeze.optimize._
 import breeze.numerics._
 import breeze.stats._
 
+/**
+ * Predict numbers based on the trained neural network. 
+ */
 object Predict extends App {
   val (theta1, theta2) = Data.getWeightData()
   def _predict(x: DenseVector[Double]): Unit = {
     val image = x.toDenseMatrix
+    DisplayData(image)
+    Thread.sleep(1000)
     
     //----------------------------------------------------------------------
     // Add bias column.
@@ -32,7 +37,7 @@ object Predict extends App {
     val (activation, index) = argmax(O_OUT)
     val prediction = if(index == 9) 0 else (index +1)
     
-    DisplayData(image)    
+
     println("Prediction is %d, probability is %s".format(prediction, O_OUT.toArray(index)))
     Thread.sleep(3000)
   }
