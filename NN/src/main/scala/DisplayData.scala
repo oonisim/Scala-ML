@@ -14,7 +14,7 @@ object DisplayData extends App {
 
     val numImages = X.rows.toInt
     val oneImage = X(0, ::).t
-    
+
     val imageSize = oneImage.length
     val imageWidth = Math.sqrt(imageSize).toInt
     val imageHeight = imageSize / imageWidth
@@ -30,14 +30,16 @@ object DisplayData extends App {
       val cell = DenseMatrix.tabulate[Double](imageHeight, imageWidth) {
         (h, w) => image(h * imageHeight + w)
       }
-/*
+      /*
       display(
         (r * imageHeight) until (r * imageHeight + imageHeight),
         (c * imageWidth) until (c * imageWidth + imageWidth)) := cell
 */
       for (w <- (0 until imageWidth); h <- (0 until imageHeight)) {
-        //display((r * imageHeight) + h, (c * imageWidth) + w) = X(xi, w + h) / maxVal
-        display((r * imageHeight) + h, (c * imageWidth) + w) = X(xi, w * imageHeight + (imageHeight - h -1))
+        //display((r * imageHeight) + h, (c * imageWidth) + w) = X(xi, h * imageHeight + w) / maxVal
+        display(
+          (r * imageHeight) + h, (c * imageWidth) + w) =
+          X(xi, w * imageHeight + (imageHeight - h - 1))
       }
     }
     val f = Figure()
@@ -45,7 +47,7 @@ object DisplayData extends App {
     f.refresh()
     f.saveas("image.png")
     csvwrite(new File("image.csv"), display)
-    
+
     display
   }
 
