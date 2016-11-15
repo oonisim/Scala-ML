@@ -66,7 +66,6 @@ object CostFunction extends App {
     val X = DenseMatrix.horzcat(
       DenseMatrix.ones[Double](training_data.rows, 1),
       training_data)
-    //println("%d, %d".format(X.rows, X.cols))
 
     //------------------------------------------------------------------------
     // Calculate the logistic value of the hidden layer H / Activation 2 (A2). 
@@ -80,7 +79,7 @@ object CostFunction extends App {
     //------------------------------------------------------------------------
     val O_NET = H_OUT * theta2.t;
     val O_OUT = sigmoid(O_NET);
-    
+
     //------------------------------------------------------------------------
     // Convert y (10, 10, 10 .... 9, 9, 9, ... ,1) into a boolean matrix.
     // if y(i) is 10, then E(i, :) is [1,0,0,0,0,0,0,0,0,0,0].
@@ -161,12 +160,21 @@ object CostFunction extends App {
    * ================================================================================
    */
   def bsxfun(in: DenseVector[Double], out: DenseVector[Double]): DenseMatrix[Double] = {
+    /*
     val vectors = for {
       o <- out.toArray
     } yield {
       in.toArray.map { _ * o }
     }
     val matrix = DenseMatrix(vectors: _*)
+    */
+
+    val vectors = for {
+      o <- out.toArray.par
+    } yield {
+      in.toArray.map { _ * o }
+    }
+    val matrix = DenseMatrix(vectors.seq: _*)
     matrix
   }
 
@@ -212,7 +220,8 @@ object CostFunction extends App {
         bsxfun(hi, (oi - yi))
       }
       val zero = DenseMatrix.zeros[Double](theta2.rows, theta2.cols);
-      (0 until m).foldLeft(zero)((tg, i) => tg + f(i))
+      //(0 until m).foldLeft(zero)((tg, i) => tg + f(i))
+      (0 until m).par.foldLeft(zero)((tg, i) => tg + f(i))
     }
 
     //========================================================================
@@ -241,7 +250,8 @@ object CostFunction extends App {
       def hf(j: Int) = (hi(j) * (1 - hi(j)))
       def ef(j: Int): Double = (0 until oi.length /* k */ ).foldLeft(0.0)(
         (e, k) => e + (theta2(k, j) * (oi(k) - yi(k))))
-      for (j <- (1 until hi.length); alpha <- (0 until xi.length)) {
+      //for (j <- (1 until hi.length); alpha <- (0 until xi.length)) {
+      for (j <- (1 until hi.length).par; alpha <- (0 until xi.length).par) {
         val gradient = xi(alpha) * hf(j) * ef(j)
         Theta1_grad(j - 1, alpha) = Theta1_grad(j - 1, alpha) + gradient
       }
