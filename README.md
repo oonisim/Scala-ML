@@ -31,9 +31,9 @@ To feed the cost back and adjust the theta1 to bring the cost down, calculate th
 
 ![Derivative](https://github.com/oonisim/Scala-ML/blob/master/NN/BPGradientCalculation.png)
 
-### Training
+### Training / Optimization
 
-The original data contains 5000 digit images. Used 4900 data and 100 iterations of gradients for training the network, and used the remaining 100 for validations.
+The original data contains 5000 digit images. Used 4900 data and 100 iterations of gradients for training the network, and used the remaining 100 for validations. Use the Breeze.optimize package DiffFuction to run the gradient descent(?).
 
 ### Prediction
 
