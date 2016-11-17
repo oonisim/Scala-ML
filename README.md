@@ -10,7 +10,7 @@ Some MATLAB conventions may remain as it is used at Coursera, such as index is f
 
 ### Mechanism
 
-Represent how well/poor the network(theta1, theta2) performs with the cost, which is basically how far away the output of the network is from the correct digit. Feed back the cost to adjust (theta1, theta2) to bring down the cost.
+Represent how well/poor the network(theta1, theta2) performs with a cost function, which tells how far away the output of the network is from the correct digit. Feed back the cost to adjust (theta1, theta2) to bring down the cost by running gradient descent. To be able to reach the optima by the descent, the cost function is a convex function.
 
 ### Cost Function
 
