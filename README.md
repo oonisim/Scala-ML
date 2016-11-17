@@ -3,6 +3,8 @@
 ## NN
 [Coursera Machine Learning](https://www.coursera.org/learn/machine-learning/home) Neural Network [Back Propagation](https://www.coursera.org/learn/machine-learning/home/week/5) implementation in Scala with [Scala NLP Breeze](https://github.com/scalanlp/breeze). Optimal value search fmincg is implemented with [Breeze.optimize](https://github.com/scalanlp/breeze/wiki/Quickstart#breezeoptimize) in Optimizer.scala.
 
+[NN](https://github.com/oonisim/Scala-ML/blob/master/NN/TwoLayerNeuralNetBackpropagation.png)
+
 Some MATLAB conventions may remain as it is used at Coursera, such as index is from 1, NOT 0. For the labels to classify digit, digit 1 is mapped to index 1, digit 0 is mapped to index 10. In Scala implementation, digit 1 is mapped to index 0, and digit 0 is mapped to index 9.
 
 ### Mechanism
@@ -39,3 +41,4 @@ The original data contains 5000 digit images. Used 4900 data and 100 iterations 
 
 Fed the validation data [Z.CSV](https://github.com/oonisim/Scala-ML/blob/master/NN/src/main/resources/Z.csv) to test as in the [Prediction results](https://youtu.be/3Oex8lODuLY) at YouTube.
 
+[Result](https://github.com/oonisim/Scala-ML/blob/master/NN/Result.png)
