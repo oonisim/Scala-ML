@@ -15,14 +15,17 @@ object Data {
     * @param path Relative path in the resources folder
     * @return File instance
     */
-  //val DATA_DIR = "D:/Home/Resources/Coursera/MachineLearning/W5.BackPropagation/assignment/src/main/resources"
-  val DATA_DIR = "."
+  //val RESOURCES_DIR = "D:/Home/Resources/Coursera/MachineLearning/W5.BackPropagation/assignment/src/main/resources"
+  val RESOURCES_DIR = ""
   val SEPARATOR_CSV = ','
-  val SEPARATOR_PATH = '/'
-  def getFile(path: String) = { 
+  val SEPARATOR_PATH = ""
+  def getFile(path: String): File = { 
+    //println(this.getClass.getClassLoader.getResource(".").getPath())
     val resource = this.getClass.getClassLoader.getResource(path)
     if (resource == null) sys.error("There is no file available [" + path + "]")
-    new File(resource.toURI)
+    println("Resource.toURI is " + resource.toURI)
+    val f = new File(resource.toURI)
+    f
   }
 
   /**
@@ -44,8 +47,8 @@ object Data {
   val TRAINING_DATA_X_FILE = "X.csv"
   val TRAINING_DATA_Y_FILE = "Y.csv"
   def getTrainingData(): (DenseMatrix[Double], DenseMatrix[Int]) = {
-    val X_FILE = DATA_DIR + SEPARATOR_PATH + TRAINING_DATA_X_FILE
-    val Y_FILE = DATA_DIR + SEPARATOR_PATH + TRAINING_DATA_Y_FILE
+    val X_FILE = RESOURCES_DIR + SEPARATOR_PATH + TRAINING_DATA_X_FILE
+    val Y_FILE = RESOURCES_DIR + SEPARATOR_PATH + TRAINING_DATA_Y_FILE
     /*
     require(
       Files.exists(Paths.get(X_FILE)) && Files.exists(Paths.get(Y_FILE)),
@@ -68,12 +71,14 @@ object Data {
    */
   val VALIDATION_DATA_Z_FILE = "Z.csv"
   def getValidationData(): DenseMatrix[Double] = {
-    val Z_FILE = DATA_DIR + SEPARATOR_PATH + VALIDATION_DATA_Z_FILE
+    val Z_FILE = RESOURCES_DIR + SEPARATOR_PATH + VALIDATION_DATA_Z_FILE
+    /*
     require(
       Files.exists(Paths.get(Z_FILE)) && Files.exists(Paths.get(Z_FILE)),
       "%s does not exist".format(Z_FILE))
 
-    //val Z = csvread(new File(Z_FILE), SEPARATOR_CSV)
+    val Z = csvread(new File(Z_FILE), SEPARATOR_CSV)
+    */
     val Z = csvread(getFile(Z_FILE), SEPARATOR_CSV)
     println("Type of data Z is %s, %d x %d".format(Z.getClass, Z.rows, Z.cols))
 
@@ -123,12 +128,12 @@ object Data {
   val WEIGHT_DATA_T1_FILE = "theta1.csv"
   val WEIGHT_DATA_T2_FILE = "theta2.csv"
   def getWeightData(): (DenseMatrix[Double], DenseMatrix[Double]) = {
-    val T1_FILE = DATA_DIR + SEPARATOR_PATH + WEIGHT_DATA_T1_FILE
-    val T2_FILE = DATA_DIR + SEPARATOR_PATH + WEIGHT_DATA_T2_FILE
+    val T1_FILE = RESOURCES_DIR + SEPARATOR_PATH + WEIGHT_DATA_T1_FILE
+    val T2_FILE = RESOURCES_DIR + SEPARATOR_PATH + WEIGHT_DATA_T2_FILE
+    /*
     require(
       Files.exists(Paths.get(T1_FILE)) && Files.exists(Paths.get(T2_FILE)),
       "%s and/or %s does not exist".format(T1_FILE, T2_FILE))
-    /*
     val T1 = csvread(new File(T1_FILE), SEPARATOR_CSV)
     val T2 = csvread(new File(T2_FILE), SEPARATOR_CSV)
     */
@@ -146,8 +151,8 @@ object Data {
    * --------------------------------------------------------------------------------
    */
    def putWeightData(theta1: DenseMatrix[Double], theta2: DenseMatrix[Double]) = {
-     val theta1FileName = DATA_DIR + SEPARATOR_PATH + "theta1.csv"
-     val theta2FileName = DATA_DIR + SEPARATOR_PATH + "theta2.csv"
+     val theta1FileName = RESOURCES_DIR + SEPARATOR_PATH + "theta1.csv"
+     val theta2FileName = RESOURCES_DIR + SEPARATOR_PATH + "theta2.csv"
     /*
      csvwrite(new File(theta1FileName), theta1)
      csvwrite(new File(theta2FileName), theta2)

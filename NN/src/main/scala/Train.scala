@@ -31,6 +31,9 @@ object Train extends App {
   
   //------------------------------------------------------------------------
   // Find a near optimal theta that minimize the cost function.
+  // http://fa.bianp.net/blog/2013/numerical-optimizers-for-logistic-regression/
+  // https://github.com/scalanlp/breeze/wiki/Quickstart#breezeoptimize
+  // https://lamastex.gitbooks.io/scalable-data-science/content/db/week5/09_LinearAlgebraIntro/017_LAlgIntro.html
   //------------------------------------------------------------------------
   val initial = Data.serializeTheta12(initialTheta1, initialTheta2)
   val min = minimize(

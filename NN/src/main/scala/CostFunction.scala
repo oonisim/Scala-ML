@@ -251,7 +251,11 @@ object CostFunction extends App {
       def ef(j: Int): Double = (0 until oi.length /* k */ ).foldLeft(0.0)(
         (e, k) => e + (theta2(k, j) * (oi(k) - yi(k))))
       //for (j <- (1 until hi.length); alpha <- (0 until xi.length)) {
+      
       for (j <- (1 until hi.length).par; alpha <- (0 until xi.length).par) {
+        //----------------------------------------------------------------------
+        // Green[ xi ] * Blue[ hi(j) * (1 - hi(j)) ] * Red[ theta2(k, j) * (oi(k) - yi(k))) ]
+        //----------------------------------------------------------------------
         val gradient = xi(alpha) * hf(j) * ef(j)
         Theta1_grad(j - 1, alpha) = Theta1_grad(j - 1, alpha) + gradient
       }

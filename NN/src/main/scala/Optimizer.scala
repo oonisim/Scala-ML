@@ -9,6 +9,7 @@ import breeze.stats._
  * ================================================================================
  * Find an optimal input (theta1+theta2) for the evaluation/cost function of NN.
  * Using Breeze function optimization.
+ * https://github.com/scalanlp/breeze/wiki/Quickstart#breezeoptimize  
  * http://www.scalanlp.org/api/breeze/#breeze.optimize.DiffFunction
  * ================================================================================
  */
