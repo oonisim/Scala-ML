@@ -6,14 +6,24 @@ import breeze.linalg._
 // Training and weight data handling class
 //================================================================================
 object Data {
-  val DATA_DIR = "D:/Home/Resources/Coursera/MachineLearning/W5.BackPropagation/assignment/src/main/resources"
-  val SEPARATOR_CSV = ','
-  val SEPARATOR_PATH = '/'
-
   val INPUT_LAYER_SIZE = 400; // Input Images of Digits
   val HIDDEN_LAYER_SIZE = 25;
   val NUM_LABELS = 10; // Note that digit "0" is mapped to label 10 due to MATLAB index is from 1.
   val OUTPUT_LAYER_SIZE = NUM_LABELS;
+
+  /**
+    * @param path Relative path in the resources folder
+    * @return File instance
+    */
+  //val DATA_DIR = "D:/Home/Resources/Coursera/MachineLearning/W5.BackPropagation/assignment/src/main/resources"
+  val DATA_DIR = "."
+  val SEPARATOR_CSV = ','
+  val SEPARATOR_PATH = '/'
+  def getFile(path: String) = { 
+    val resource = this.getClass.getClassLoader.getResource(path)
+    if (resource == null) sys.error("There is no file available [" + path + "]")
+    new File(resource.toURI)
+  }
 
   /**
    * --------------------------------------------------------------------------------
@@ -36,12 +46,15 @@ object Data {
   def getTrainingData(): (DenseMatrix[Double], DenseMatrix[Int]) = {
     val X_FILE = DATA_DIR + SEPARATOR_PATH + TRAINING_DATA_X_FILE
     val Y_FILE = DATA_DIR + SEPARATOR_PATH + TRAINING_DATA_Y_FILE
+    /*
     require(
       Files.exists(Paths.get(X_FILE)) && Files.exists(Paths.get(Y_FILE)),
       "%s and/or %s does not exist".format(X_FILE, Y_FILE))
-
     val X = csvread(new File(X_FILE), SEPARATOR_CSV)
     val Y = csvread(new File(Y_FILE), SEPARATOR_CSV).map(_.toInt)
+    */
+    val X = csvread(getFile(X_FILE), SEPARATOR_CSV)
+    val Y = csvread(getFile(Y_FILE), SEPARATOR_CSV).map(_.toInt)
     println("Type of training data X is %s, %d x %d".format(X.getClass, X.rows, X.cols))
     println("Type of training data Y is %s, %d x %d".format(Y.getClass, Y.rows, Y.cols))
 
@@ -60,7 +73,8 @@ object Data {
       Files.exists(Paths.get(Z_FILE)) && Files.exists(Paths.get(Z_FILE)),
       "%s does not exist".format(Z_FILE))
 
-    val Z = csvread(new File(Z_FILE), SEPARATOR_CSV)
+    //val Z = csvread(new File(Z_FILE), SEPARATOR_CSV)
+    val Z = csvread(getFile(Z_FILE), SEPARATOR_CSV)
     println("Type of data Z is %s, %d x %d".format(Z.getClass, Z.rows, Z.cols))
 
     Z
@@ -71,7 +85,7 @@ object Data {
    *  If Y(i) is 2, then M(i, :) is [0,0,1,0,0,0,0,0,0,0,0].
    * --------------------------------------------------------------------------------
    */
-  def getClassifictionMatrix(Y: DenseMatrix[Int]): DenseMatrix[Int] = {
+  def getClassificationMatrix(Y: DenseMatrix[Int]): DenseMatrix[Int] = {
     val E = DenseMatrix.eye[Int](Data.NUM_LABELS)
     val classifications = Y(::, 0).toArray
     val vectors = for (i <- (0 until classifications.size)) yield {
@@ -96,7 +110,7 @@ object Data {
    * --------------------------------------------------------------------------------
    *  Get weight at each neuron (theta)
    * --------------------------------------------------------------------------------
-   *  Theta1 is in-beween input and hidden layer. Theta2 is hidden and output.
+   *  Theta1 is in-between input and hidden layer. Theta2 is hidden and output.
    *
    *  [MATLAB data detail]
    *  Name         Size             Bytes  Class     Attributes
@@ -114,9 +128,12 @@ object Data {
     require(
       Files.exists(Paths.get(T1_FILE)) && Files.exists(Paths.get(T2_FILE)),
       "%s and/or %s does not exist".format(T1_FILE, T2_FILE))
-
+    /*
     val T1 = csvread(new File(T1_FILE), SEPARATOR_CSV)
     val T2 = csvread(new File(T2_FILE), SEPARATOR_CSV)
+    */
+    val T1 = csvread(getFile(T1_FILE), SEPARATOR_CSV)
+    val T2 = csvread(getFile(T2_FILE), SEPARATOR_CSV)
     println("Type of weight data T1 is %s, %d x %d".format(T1.getClass, T1.rows, T1.cols))
     println("Type of weight data T2 is %s, %d x %d".format(T2.getClass, T2.rows, T2.cols))
 
@@ -131,8 +148,12 @@ object Data {
    def putWeightData(theta1: DenseMatrix[Double], theta2: DenseMatrix[Double]) = {
      val theta1FileName = DATA_DIR + SEPARATOR_PATH + "theta1.csv"
      val theta2FileName = DATA_DIR + SEPARATOR_PATH + "theta2.csv"
+    /*
      csvwrite(new File(theta1FileName), theta1)
      csvwrite(new File(theta2FileName), theta2)
+    */
+     csvwrite(getFile(theta1FileName), theta1)
+     csvwrite(getFile(theta2FileName), theta2)
    }
   
   def ones(rows: Int, cols: Int): DenseMatrix[Int] = {

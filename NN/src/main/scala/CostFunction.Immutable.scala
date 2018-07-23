@@ -79,7 +79,7 @@ object CostFunctionImmutable extends App {
     // Convert y (10, 10, 10 .... 9, 9, 9, ... ,1) into a boolean matrix.
     // if y(i) is 10, then E(i, :) is [1,0,0,0,0,0,0,0,0,0,0].
     //------------------------------------------------------------------------
-    val Y = Data.getClassifictionMatrix(classifications)
+    val Y = Data.getClassificationMatrix(classifications)
     val J = cost(theta1, theta2, input_layer_size, hidden_layer_size, number_of_labels, training_data, classifications, lambda, X, Y, H_OUT, O_OUT)
     val (theta1_gradient, theta2_gradient) = gradient(theta1, theta2, input_layer_size, hidden_layer_size, number_of_labels, training_data, classifications, lambda, X, Y, H_OUT, O_OUT)
 
